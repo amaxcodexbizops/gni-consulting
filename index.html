@@ -592,14 +592,14 @@
     .res-slider {
       width: 100%; overflow: hidden; border-radius: 12px;
       box-shadow: 0 8px 32px rgba(44,31,16,0.18);
+      position: relative;
     }
     .res-track {
       display: flex; flex-wrap: nowrap;
-      transition: transform 0.45s cubic-bezier(.4,0,.2,1);
-      will-change: transform;
+      transition: transform 0.5s cubic-bezier(.4,0,.2,1);
     }
     .res-slide {
-      flex: 0 0 100%; width: 100%; min-width: 0; position: relative; background: var(--cream);
+      flex: 0 0 100%; width: 100%; position: relative; background: var(--cream);
     }
     .res-slide img {
       width: 100%; display: block; object-fit: contain;
@@ -612,6 +612,25 @@
       border-top: 2px solid var(--gold);
       background: var(--cream); text-align: center;
     }
+    .res-controls {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; padding: 16px 0 8px;
+    }
+    .res-arrow {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1.5px solid var(--gold); background: transparent;
+      color: var(--gold); cursor: pointer; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s; flex-shrink: 0;
+    }
+    .res-arrow:hover { background: var(--gold); color: #fff; }
+    .res-dots { display: flex; gap: 7px; align-items: center; }
+    .res-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--beige); border: 1.5px solid var(--gold);
+      cursor: pointer; transition: background 0.2s;
+    }
+    .res-dot.active { background: var(--gold); }
     .testimonials-track {
       display: flex;
       gap: 20px;
@@ -1422,7 +1441,7 @@
         </div>
       </div>
       <div class="res-controls">
-        <button class="testimonials-btn" id="resPrev" aria-label="Previous result">&#8592;</button>
+        <button class="res-arrow" id="resPrev" aria-label="Previous">&#8592;</button>
         <div class="res-dots">
           <div class="res-dot  active" data-i="0"></div>
           <div class="res-dot" data-i="1"></div>
@@ -1430,8 +1449,8 @@
           <div class="res-dot" data-i="3"></div>
           <div class="res-dot" data-i="4"></div>
         </div>
-        <button class="testimonials-btn" id="resNext" aria-label="Next result">&#8594;</button>
-      </div>
+        <button class="res-arrow" id="resNext" aria-label="Next">&#8594;</button>
+      </div></div>
     <div style="text-align:center; margin-top:24px;">
       <a href="results.html" class="btn-outline" style="display:inline-block;">See All Results</a>
     </div>
@@ -1752,23 +1771,26 @@
 
   // Results image slider
   (function() {
-    const track = document.getElementById('resTrack');
-    const dots  = document.querySelectorAll('.res-dot');
-    const prev  = document.getElementById('resPrev');
-    const next  = document.getElementById('resNext');
-    if (!track) return;
-    let cur = 0, total = track.children.length, timer;
-    function go(n) {
-      cur = (n + total) % total;
-      track.style.transform = 'translateX(-' + (cur * 100) + '%)';
-      dots.forEach((d,i) => d.classList.toggle('active', i === cur));
-    }
-    function startAuto() { timer = setInterval(() => go(cur + 1), 3500); }
-    function stopAuto()  { clearInterval(timer); }
-    if (prev) prev.addEventListener('click', () => { stopAuto(); go(cur - 1); startAuto(); });
-    if (next) next.addEventListener('click', () => { stopAuto(); go(cur + 1); startAuto(); });
-    dots.forEach(d => d.addEventListener('click', () => { stopAuto(); go(+d.dataset.i); startAuto(); }));
-    startAuto();
+    /* Results slider */
+    (function() {
+      var track = document.getElementById('resTrack');
+      if (!track) return;
+      var dots = document.querySelectorAll('.res-dot');
+      var prev = document.getElementById('resPrev');
+      var next = document.getElementById('resNext');
+      var cur = 0, total = track.children.length, timer;
+      function go(n) {
+        cur = ((n % total) + total) % total;
+        track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+        dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
+      }
+      function startAuto() { timer = setInterval(function() { go(cur + 1); }, 3800); }
+      function stopAuto() { clearInterval(timer); }
+      if (prev) prev.addEventListener('click', function() { stopAuto(); go(cur - 1); startAuto(); });
+      if (next) next.addEventListener('click', function() { stopAuto(); go(cur + 1); startAuto(); });
+      dots.forEach(function(d) { d.addEventListener('click', function() { stopAuto(); go(+d.dataset.i); startAuto(); }); });
+      startAuto();
+    })();
   })();
   </script>
 
