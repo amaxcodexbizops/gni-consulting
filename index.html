@@ -1768,7 +1768,7 @@
     var resPrev = document.getElementById('resPrev');
     var resNext = document.getElementById('resNext');
     if (!slides.length) return;
-    var resCur = 0, resTotal = slides.length, resTimer;
+    var resCur = 0, resTotal = slides.length;
     function resGo(n) {
       slides[resCur].classList.remove('active');
       resDots[resCur].classList.remove('active');
@@ -1776,12 +1776,9 @@
       slides[resCur].classList.add('active');
       resDots[resCur].classList.add('active');
     }
-    function resStart() { resTimer = setInterval(function() { resGo(resCur + 1); }, 3800); }
-    function resStop()  { clearInterval(resTimer); }
-    if (resPrev) resPrev.addEventListener('click', function() { resStop(); resGo(resCur - 1); resStart(); });
-    if (resNext) resNext.addEventListener('click', function() { resStop(); resGo(resCur + 1); resStart(); });
-    resDots.forEach(function(d) { d.addEventListener('click', function() { resStop(); resGo(+d.dataset.i); resStart(); }); });
-    resStart();
+    if (resPrev) resPrev.addEventListener('click', function() { resGo(resCur - 1); });
+    if (resNext) resNext.addEventListener('click', function() { resGo(resCur + 1); });
+    resDots.forEach(function(d) { d.addEventListener('click', function() { resGo(+d.dataset.i); }); });
   })();
   </script>
 
