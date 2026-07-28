@@ -1670,25 +1670,6 @@
     mobileNav.classList.remove('open');
   }
 
-  /* ── Testimonials slider ───────────────────────── */
-  const track = document.getElementById('testimonialsTrack');
-  const dots  = document.querySelectorAll('.testimonials-dot');
-  let current = 0;
-  const total = 4;
-
-  function goTo(i) {
-    current = (i + total) % total;
-    track.style.transform = `translateX(-${current * 100}%)`;
-    dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
-  }
-
-  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-  dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.i)));
-
-  // Auto-advance
-  setInterval(() => goTo(current + 1), 5000);
-
   /* ── FAQ arrows ────────────────────────────────── */
   document.querySelectorAll('.faq-item').forEach(item => {
     const arrow = item.querySelector('.faq-arrow');
@@ -1769,28 +1750,25 @@
   }, { threshold: 0.5 });
   if (statNums[0]) statsObs.observe(statNums[0].closest('.stats-center') || statNums[0]);
 
-  // Results image slider
+  /* ── Results image slider ───────────────────────── */
   (function() {
-    /* Results slider */
-    (function() {
-      var track = document.getElementById('resTrack');
-      if (!track) return;
-      var dots = document.querySelectorAll('.res-dot');
-      var prev = document.getElementById('resPrev');
-      var next = document.getElementById('resNext');
-      var cur = 0, total = track.children.length, timer;
-      function go(n) {
-        cur = ((n % total) + total) % total;
-        track.style.transform = 'translateX(-' + (cur * 100) + '%)';
-        dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
-      }
-      function startAuto() { timer = setInterval(function() { go(cur + 1); }, 3800); }
-      function stopAuto() { clearInterval(timer); }
-      if (prev) prev.addEventListener('click', function() { stopAuto(); go(cur - 1); startAuto(); });
-      if (next) next.addEventListener('click', function() { stopAuto(); go(cur + 1); startAuto(); });
-      dots.forEach(function(d) { d.addEventListener('click', function() { stopAuto(); go(+d.dataset.i); startAuto(); }); });
-      startAuto();
-    })();
+    var resTrack = document.getElementById('resTrack');
+    if (!resTrack) return;
+    var resDots = document.querySelectorAll('.res-dot');
+    var resPrev = document.getElementById('resPrev');
+    var resNext = document.getElementById('resNext');
+    var resCur = 0, resTotal = resTrack.children.length, resTimer;
+    function resGo(n) {
+      resCur = ((n % resTotal) + resTotal) % resTotal;
+      resTrack.style.transform = 'translateX(-' + (resCur * 100) + '%)';
+      resDots.forEach(function(d, i) { d.classList.toggle('active', i === resCur); });
+    }
+    function resStart() { resTimer = setInterval(function() { resGo(resCur + 1); }, 3800); }
+    function resStop()  { clearInterval(resTimer); }
+    if (resPrev) resPrev.addEventListener('click', function() { resStop(); resGo(resCur - 1); resStart(); });
+    if (resNext) resNext.addEventListener('click', function() { resStop(); resGo(resCur + 1); resStart(); });
+    resDots.forEach(function(d) { d.addEventListener('click', function() { resStop(); resGo(+d.dataset.i); resStart(); }); });
+    resStart();
   })();
   </script>
 
