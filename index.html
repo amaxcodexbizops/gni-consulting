@@ -222,6 +222,10 @@
       gap: 5px;
       cursor: pointer;
       padding: 4px;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      background: none;
+      border: none;
     }
     .nav-hamburger span {
       display: block;
@@ -598,9 +602,16 @@
     }
     .res-track { position: relative; }
     .res-slide {
-      display: none; width: 100%; background: var(--cream);
+      position: absolute; top: 0; left: 0;
+      width: 100%; background: var(--cream);
+      opacity: 0; transition: opacity 0.5s ease;
+      pointer-events: none;
     }
-    .res-slide.active { display: block; }
+    .res-slide.active {
+      position: relative;
+      opacity: 1;
+      pointer-events: auto;
+    }
     .res-slide img {
       width: 100%; display: block; object-fit: contain;
       max-height: 420px; background: #fff;

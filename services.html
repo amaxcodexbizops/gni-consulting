@@ -217,6 +217,10 @@
       gap: 5px;
       cursor: pointer;
       padding: 4px;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      background: none;
+      border: none;
     }
     .nav-hamburger span {
       display: block;
@@ -1437,7 +1441,7 @@
 
 <!-- Mobile Navigation Drawer -->
 <div class="mobile-nav" id="mobileNav">
-  <a href="#" onclick="closeMobileNav()">Home</a>
+  <a href="index.html" onclick="closeMobileNav()">Home</a>
   <a href="about.html" onclick="closeMobileNav()">About</a>
   <a href="#services" onclick="closeMobileNav()">Services</a>
   <a href="results.html" onclick="closeMobileNav()">Results</a>
@@ -1664,9 +1668,12 @@
   if (navbar) window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 10));
   const menuBtn = document.getElementById('menuBtn');
   const mobileNav = document.getElementById('mobileNav');
-  function toggleMobileNav() { if (mobileNav) mobileNav.classList.toggle('open'); }
   function closeMobileNav() { if (mobileNav) mobileNav.classList.remove('open'); }
-  if (menuBtn) menuBtn.onclick = toggleMobileNav;
+  if (menuBtn) {
+    menuBtn.addEventListener('click', function() {
+      mobileNav.classList.toggle('open');
+    });
+  }
 </script>
 
 </body>
